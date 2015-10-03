@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<spells>
+  <spell id="fireball">
+    <targetType>Single</targetType>
+    <targetGroup>Minions, Champions, Allies, Enemies</targetGroup>
+    <effects>
+      <spellDamage>
+        <amount>6</amount>
+      </spellDamage>
+    </effects>
+  </spell>
+  <spell id="flamestrike">
+    <targetType>None</targetType>
+    <targetGroup>Minions, Enemies</targetGroup>
+    <effects>
+      <spellDamage>
+        <amount>4</amount>
+      </spellDamage>
+    </effects>
+  </spell>
+</spells>

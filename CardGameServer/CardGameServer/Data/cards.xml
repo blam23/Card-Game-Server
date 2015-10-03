@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<cards>
+  <card id="summon_champ">
+    <type>Creature</type>
+    <creatureID>champ</creatureID>
+    <cost>6</cost>
+    <image>_</image>
+  </card>
+  <card id="spell_fireball">
+    <type>Spell</type>
+    <spellID>fireball</spellID>
+    <cost>4</cost>
+    <image>spell/fireball</image>
+  </card>
+</cards>

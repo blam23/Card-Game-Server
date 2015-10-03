@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<creatures>
+  <!-- COMMANDERS-->
+  <creature id="c-irozeek">
+    <class>knight</class>
+    <name>Stalwart Irozeek</name>
+    <image>creature/dummy</image>
+    <health>50</health>
+    <attack>0</attack>
+    <type>humanoid</type>
+    <commander/>
+  </creature>
+  
+  <creature id="c-herbalisha">
+    <class>nature</class>
+    <name>Herbalisha</name>
+    <image>creature/dummy</image>
+    <health>35</health>
+    <attack>0</attack>
+    <type>humanoid</type>
+    <commander/>
+  </creature>
+  
+  <!-- NEUTRALS-->
+  <creature id="leper">
+    <name>Leper Gnome</name>
+    <health>1</health>
+    <attack>2</attack>
+    <cost>1</cost>
+    <type>humanoid</type>
+    <image>creature/leper-gnome</image>
+    <effects>
+      <deathrattle>
+        <ondeath>
+          <spell>
+            <targetType>None</targetType>
+            <targetGroup>Enemies, Champions</targetGroup>
+            <effects>
+              <spellDamage>
+                <amount>2</amount>
+              </spellDamage>
+            </effects>
+          </spell>
+        </ondeath>
+      </deathrattle>
+    </effects>
+  </creature>
+  <creature id="super-leper">
+    <name>Scary Leper</name>
+    <health>2</health>
+    <attack>3</attack>
+    <cost>3</cost>
+    <taunt/>
+    <type>humanoid</type>
+    <image>creature/leper-gnome</image>
+    <effects>
+      <deathrattle>
+        <ondeath>
+          <spell>
+            <targetType>None</targetType>
+            <targetGroup>Enemies, Champions, Minions</targetGroup>
+            <effects>
+              <spellDamage>
+                <amount>2</amount>
+              </spellDamage>
+            </effects>
+          </spell>
+        </ondeath>
+      </deathrattle>
+    </effects>
+  </creature>
+  <creature id="smallshield">
+    <name>Hello! Hello!</name>
+    <health>2</health>
+    <attack>1</attack>
+    <cost>2</cost>
+    <type>mechanical</type>
+    <image>creature/dummy</image>
+    <taunt/>
+    <effects>
+      <divineshield/>
+    </effects>
+  </creature>
+  
+  <!-- KNIGHT CREATURES -->
+  <creature id="champ">
+    <name>Shitty Bro</name>
+    <health>1</health>
+    <attack>7</attack>
+    <cost>7</cost>
+    <type>humanoid</type>
+    <class>knight</class>
+    <image>creature/dummy</image>
+    <taunt/>
+    <effects>
+      <divineshield/>
+    </effects>
+  </creature>
+  <creature id="testbro">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+  <!-- NATURE CREATURES -->
+  <creature id="token_treant">
+    <name>Treant</name>
+    <health>2</health>
+    <attack>2</attack>
+    <cost>2</cost>
+    <class>nature</class>
+    <type>tree</type>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <!-- TODO: Add "Die On Round End" here! -->
+    </effects>
+  </creature>
+</creatures>
