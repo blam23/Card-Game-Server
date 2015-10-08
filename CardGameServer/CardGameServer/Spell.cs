@@ -38,7 +38,7 @@ namespace CardGameServer
         protected virtual void OnSpellCast(Spell arg1, List<Creature> arg2)
         {
             var handler = SpellCast;
-            if (handler != null) handler(arg1, arg2);
+            handler?.Invoke(arg1, arg2);
         }
 
         /// <summary>

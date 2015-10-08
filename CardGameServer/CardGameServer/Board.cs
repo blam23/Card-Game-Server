@@ -28,9 +28,11 @@ namespace CardGameServer
         /// <param name="player">The player that sent the command</param>
         /// <param name="action">What type of action it is</param>
         /// <param name="data">The data, such as who to target or the player's name</param>
-        public void RecieveCommand(Player player, GameAction action, Dictionary<string, string> data)
+        public void RecieveCommand(Player player, GameDataAction dataAction)
         {
             // TODO: Finish the command recieved events
+            var data = dataAction.Data;
+            var action = dataAction.Action;
             if (player == ActivePlayer)
             {
                 switch (action)

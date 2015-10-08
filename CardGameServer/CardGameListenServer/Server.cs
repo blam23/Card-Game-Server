@@ -94,8 +94,13 @@ namespace CardGameListenServer
                     // Network Protocol s2.1
                     if (input.Data["counter"].Int() == (++client.PingCounter))
                     {
-                        client.Writer.SendAction(GameAction.Ping, new Dictionary<string, GameData> { {"counter", (++client.PingCounter) } });
+                        client.Writer.SendAction(GameAction.Ping,
+                            new Dictionary<string, GameData> {{"counter", (++client.PingCounter)}});
                     }
+                }
+                else
+                {
+                    Game.Board.RecieveCommand(player, input);
                 }
             }
         }

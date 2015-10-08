@@ -8,7 +8,7 @@ namespace CardGameServer
     /// </summary>
     public class XMLAttributes
     {
-        public Dictionary<string, object> BaseDictionary = new Dictionary<string, object>();
+        public readonly Dictionary<string, object> BaseDictionary = new Dictionary<string, object>();
 
         public void Add(string name, object value)
         {
