@@ -163,5 +163,10 @@ namespace CardGameServer
             }
             return desc.ToString().Trim();
         }
+
+        public void Cast(List<Creature> creatures = null)
+        {
+            OnSpellCast(this, creatures);
+        }
     }
 }

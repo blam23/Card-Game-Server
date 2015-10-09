@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using CardProtocolLibrary;
 
@@ -139,7 +140,7 @@ namespace CardGameServer
         protected virtual void OnTurnEnd(Board arg1, Player arg2)
         {
             var handler = TurnEnd;
-            if (handler != null) handler(arg1, arg2);
+            handler?.Invoke(arg1, arg2);
         }
 
         public event Action<Board, Player> TurnStart;
@@ -147,7 +148,7 @@ namespace CardGameServer
         protected virtual void OnTurnStart(Board arg1, Player arg2)
         {
             var handler = TurnStart;
-            if (handler != null) handler(arg1, arg2);
+            handler?.Invoke(arg1, arg2);
         }
 
         /// <summary>
@@ -207,14 +208,48 @@ namespace CardGameServer
             Console.WriteLine("SUMMONING: " + creature.Name);
         }
 
+        /// <summary>
+        /// Builds up a list of possible targets for the given spell and player.
+        /// </summary>
+        /// <param name="owner">Owner of the spell</param>
+        /// <param name="spell">Spell in question</param>
+        /// <returns></returns>
+        public List<Creature> GetPossibleTargets(Player owner, Spell spell)
+        {
+            var creatures = new List<Creature>();
+            if (spell.TargetGroup.IsFlagSet(TargetGroup.None))
+            {
+                return creatures;
+            }
+            if (spell.TargetGroup.IsFlagSet(TargetGroup.Champions))
+            {
+                if (spell.TargetGroup.IsFlagSet(TargetGroup.Allies))
+                {
+                    creatures.Add(owner.Commander);
+                }
+                if (spell.TargetGroup.IsFlagSet(TargetGroup.Enemies))
+                {
+                    creatures.AddRange(from p in Players where p != owner select p.Commander);
+                }
+            }
+
+            if (!spell.TargetGroup.IsFlagSet(TargetGroup.Minions)) return creatures;
+
+            if (spell.TargetGroup.IsFlagSet(TargetGroup.Allies))
+            {
+                creatures.AddRange(owner.Creatures.Where(c => !c.Commander));
+            }
+            if (spell.TargetGroup.IsFlagSet(TargetGroup.Enemies))
+            {
+                creatures.AddRange(from p in Players from c in p.Creatures where !c.Commander select c);
+            }
+            return creatures;
+        } 
+
         public void Cast(Player owner, Spell spell, List<Creature> targets)
         {
             Console.WriteLine("CASTING: " + spell.ID);
-        }
-
-        public void Cast(Player owner, Spell spell)
-        {
-            Cast(owner, spell, null);
+            spell.Cast(targets);
         }
     }
 }
