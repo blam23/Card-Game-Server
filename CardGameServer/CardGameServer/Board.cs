@@ -18,10 +18,58 @@ namespace CardGameServer
         public int TurnCounter = 0;
         public int ActivePlayerID = 0;
         public Player ActivePlayer => Players[ActivePlayerID];
-        public event Action<Board, Player> TurnEnd;
         public Boolean GameOver = false;
         public Player Winner = null;
         public Timer TurnTimer;
+        public Dictionary<Guid, Creature> Creatures; 
+
+        #region Events
+        /// <summary>
+        /// Fires before a spell is cast, return false to cancel the spell cast.
+        /// </summary>
+        public event Func<Spell, bool> PreSpellCast;
+
+        protected virtual bool OnPreSpellCast(Spell spell)
+        {
+            // If there is any subscribers, invoke them and
+            // use their result. Otherwise return true!
+            return PreSpellCast?.Invoke(spell) ?? true;
+        }
+
+        /// <summary>
+        /// Fires after a spell is cast.
+        /// </summary>
+        public event Action<Spell> PostSpellCast;
+
+        protected virtual void OnPostSpellCast(Spell spell)
+        {
+            PostSpellCast?.Invoke(spell);
+        }
+
+        /// <summary>
+        /// Fires when a player's turn ends
+        /// </summary>
+        public event Action<Board, Player> TurnEnd;
+
+        
+        protected virtual void OnTurnEnd(Board arg1, Player arg2)
+        {
+            var handler = TurnEnd;
+            handler?.Invoke(arg1, arg2);
+        }
+
+        /// <summary>
+        /// Fires as a player's turn starts
+        /// </summary>
+        public event Action<Board, Player> TurnStart;
+
+        protected virtual void OnTurnStart(Board arg1, Player arg2)
+        {
+            var handler = TurnStart;
+            handler?.Invoke(arg1, arg2);
+        }
+        #endregion
+
 
         /// <summary>
         /// Handles a GameAction command sent by a player.
@@ -46,7 +94,12 @@ namespace CardGameServer
                         // Attempt to get the card matching the UID
                         if (player.Cards.TryGetValue(new Guid(data["uid"]), out card))
                         {
-                            card.Play(this);
+                            GameData targetID;
+                            if (data.TryGetValue("target", out targetID))
+                            {
+                                
+                            }
+                            card.Play();
                         }
                         break;
                     case GameAction.GameStart:
@@ -135,20 +188,6 @@ namespace CardGameServer
         {
             // Currently this timer will run every two minutes.
             TurnTimer = new Timer(EndTurn, null, new TimeSpan(0, 2, 0), new TimeSpan(0, 2, 0));
-        }
-
-        protected virtual void OnTurnEnd(Board arg1, Player arg2)
-        {
-            var handler = TurnEnd;
-            handler?.Invoke(arg1, arg2);
-        }
-
-        public event Action<Board, Player> TurnStart;
-
-        protected virtual void OnTurnStart(Board arg1, Player arg2)
-        {
-            var handler = TurnStart;
-            handler?.Invoke(arg1, arg2);
         }
 
         /// <summary>
@@ -244,12 +283,51 @@ namespace CardGameServer
                 creatures.AddRange(from p in Players from c in p.Creatures where !c.Commander select c);
             }
             return creatures;
-        } 
+        }
 
-        public void Cast(Player owner, Spell spell, List<Creature> targets)
+        /// <summary>
+        /// Generates a list of targets from the spell and player data, 
+        ///  then casts the spell on them.
+        /// </summary>
+        /// <param name="player">Player who is casting spell</param>
+        /// <param name="spell">Spell to cast</param>
+        /// <param name="pickedTarget">The creature/commander to target with spell, if needed.</param>
+        /// <returns>True if spell cast started (even if spell was blocked), false if invalid target given.</returns>
+        public bool Cast(Player player, Spell spell, Creature pickedTarget = null)
+        {
+            var targets = GetPossibleTargets(player, spell);
+            switch (spell.TargetType)
+            {
+                case TargetType.Random:
+                    Cast(spell, new List<Creature> { targets[ServerRandom.Generator.Next(targets.Count)] });
+                    return true;
+                case TargetType.Single:
+                    if (targets.Contains(pickedTarget))
+                    {
+                        Cast(spell, new List<Creature> { pickedTarget });
+                        return true;
+                    }
+                    return false;
+                case TargetType.None:
+                    Cast(spell, targets);
+                    return true;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+
+        /// <summary>
+        /// Casts spell at specified targets, use Cast(Player, Spell, Creature) to
+        ///  cast spells normally (with their correct targets).
+        /// </summary>
+        /// <param name="spell">Spell to cast</param>
+        /// <param name="targets">Targets to cast it on</param>
+        public void Cast(Spell spell, List<Creature> targets)
         {
             Console.WriteLine("CASTING: " + spell.ID);
+            if (!OnPreSpellCast(spell)) return;
             spell.Cast(targets);
+            OnPostSpellCast(spell);
         }
     }
 }

@@ -24,36 +24,33 @@ namespace CardGameServer
         protected virtual void OnPlayed(Card obj)
         {
             var handler = Played;
-            if (handler != null) handler(obj);
+            handler?.Invoke(obj);
         }
 
-        public bool Play(Board b)
+        public bool Play(Creature target = null)
         {
             OnPlayed(this);
-
+            if (CancelPlay) return false;
             switch (Type)
             {
                 case CardType.Creature:
                     Game.Board.Summon(Owner, Game.Creatures[CreatureID]);
                     break;
                 case CardType.Spell:
-                    Game.Board.Cast(Owner, Game.Spells[SpellID]);
+                    Game.Board.Cast(Owner, Game.Spells[SpellID], target);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
-            return !CancelPlay;
+            return true;
         }
 
         public Card CreateInstance()
         {
             var card = new Card
             {
-                ID = ID,
-                Type = Type,
-                CreatureID = CreatureID,
-                SpellID = SpellID,
-                Cost = Cost,
-                UID = Guid.NewGuid()
+                ID = ID, Type = Type, CreatureID = CreatureID, SpellID = SpellID, Cost = Cost, UID = Guid.NewGuid()
             };
 
             foreach (var effect in EffectData)
