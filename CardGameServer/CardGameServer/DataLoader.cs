@@ -163,7 +163,7 @@ namespace CardGameServer
             // Loop over each node and add it to our dictionary
             foreach (XmlNode spellData in spellXmlDocument.GetElementsByTagName("spell"))
             {
-                string name = spellData.Attributes["id"].Value;
+                string name = spellData.Attributes["ID"].Value;
                 var spell = GetSpell(spellData, name);
 
                 spells.Add(name, spell);
@@ -198,7 +198,7 @@ namespace CardGameServer
         /// <summary>
         /// Loads in Creatures from the "creatures.xml" resource file.
         /// </summary>
-        /// <returns>A dictionary mapping creature id's to the actual Creature base instance.</returns>
+        /// <returns>A dictionary mapping creature ID's to the actual Creature base instance.</returns>
         public static Dictionary<string, Creature> LoadCreatures()
         {
             // Parse the XML document.
@@ -210,7 +210,7 @@ namespace CardGameServer
             // Loop over each creature in the XML's base "creature" node.
             foreach (XmlNode creatureData in creatureXmlDocument.GetElementsByTagName("creature"))
             {
-                var name = creatureData.Attributes["id"].Value;
+                var name = creatureData.Attributes["ID"].Value;
 
                 // Load in all of the creature's base data
                 // We load in booleans such as Taunt or MagicImmune
@@ -259,7 +259,7 @@ namespace CardGameServer
 
             foreach (XmlNode cardData in cardXmlDocument.GetElementsByTagName("card"))
             {
-                var name = cardData.Attributes["id"].Value;
+                var name = cardData.Attributes["ID"].Value;
 
                 // We load in the card's data, A card must have an
                 //  ID, Cost, Type and related Creature or Spell ID.

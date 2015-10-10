@@ -16,7 +16,7 @@ namespace CardGameServer
         //  they would have unique UIDs but the same ID.
         // This is useful for keeping track of a single instance
         //  of a spell.
-        public Guid UID;
+        public SID UID;
 
         public string ID;
         public TargetType TargetType;
@@ -55,7 +55,7 @@ namespace CardGameServer
                 ID = ID,
                 TargetType = TargetType,
                 TargetGroup = TargetGroup,
-                UID = Guid.NewGuid()
+                UID = SID.New()
             };
 
             foreach (var effect in EffectData)

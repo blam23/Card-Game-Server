@@ -10,7 +10,7 @@ namespace CardGameServer
     public class Creature
     {
         // Base Attributes
-        public Guid UID;
+        public SID UID;
         public string ID;
         public string Name;
         public string Description;
@@ -216,7 +216,7 @@ namespace CardGameServer
                 AttackDamageType = AttackDamageType,
                 Owner = owner,
                 Image = Image,
-                UID = Guid.NewGuid()
+                UID = SID.New()
             };
 
             foreach (var effect in EffectData)

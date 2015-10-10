@@ -9,7 +9,7 @@ namespace CardGameServer
     /// </summary>
     public class Card
     {
-        public Guid UID;
+        public SID UID;
         public String ID;
         public CardType Type;
         public int Cost;
@@ -50,7 +50,7 @@ namespace CardGameServer
         {
             var card = new Card
             {
-                ID = ID, Type = Type, CreatureID = CreatureID, SpellID = SpellID, Cost = Cost, UID = Guid.NewGuid()
+                ID = ID, Type = Type, CreatureID = CreatureID, SpellID = SpellID, Cost = Cost, UID = SID.New()
             };
 
             foreach (var effect in EffectData)

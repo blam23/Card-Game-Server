@@ -1,33 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <creatures>
   <!-- COMMANDERS-->
-  <creature id="c-irozeek">
+  <creature ID="c-irozeek">
     <class>knight</class>
     <name>Stalwart Irozeek</name>
     <image>creature/dummy</image>
     <health>50</health>
     <attack>0</attack>
-    <type>humanoid</type>
+    <type>humanoID</type>
     <commander/>
   </creature>
   
-  <creature id="c-herbalisha">
+  <creature ID="c-herbalisha">
     <class>nature</class>
     <name>Herbalisha</name>
     <image>creature/dummy</image>
     <health>35</health>
     <attack>0</attack>
-    <type>humanoid</type>
+    <type>humanoID</type>
     <commander/>
   </creature>
   
   <!-- NEUTRALS-->
-  <creature id="leper">
+  <creature ID="leper">
     <name>Leper Gnome</name>
     <health>1</health>
     <attack>2</attack>
     <cost>1</cost>
-    <type>humanoid</type>
+    <type>humanoID</type>
     <image>creature/leper-gnome</image>
     <effects>
       <deathrattle>
@@ -45,13 +45,13 @@
       </deathrattle>
     </effects>
   </creature>
-  <creature id="super-leper">
+  <creature ID="super-leper">
     <name>Scary Leper</name>
     <health>2</health>
     <attack>3</attack>
     <cost>3</cost>
     <taunt/>
-    <type>humanoid</type>
+    <type>humanoID</type>
     <image>creature/leper-gnome</image>
     <effects>
       <deathrattle>
@@ -69,7 +69,7 @@
       </deathrattle>
     </effects>
   </creature>
-  <creature id="smallshield">
+  <creature ID="smallshield">
     <name>Hello! Hello!</name>
     <health>2</health>
     <attack>1</attack>
@@ -83,12 +83,12 @@
   </creature>
   
   <!-- KNIGHT CREATURES -->
-  <creature id="champ">
+  <creature ID="champ">
     <name>Shitty Bro</name>
     <health>1</health>
     <attack>7</attack>
     <cost>7</cost>
-    <type>humanoid</type>
+    <type>humanoID</type>
     <class>knight</class>
     <image>creature/dummy</image>
     <taunt/>
@@ -96,7 +96,7 @@
       <divineshield/>
     </effects>
   </creature>
-  <creature id="testbro">
+  <creature ID="testbro">
     <name>Master Baiter</name>
     <health>1</health>
     <attack>3</attack>
@@ -113,7 +113,7 @@
   </creature>
 
   <!-- NATURE CREATURES -->
-  <creature id="token_treant">
+  <creature ID="token_treant">
     <name>Treant</name>
     <health>2</health>
     <attack>2</attack>

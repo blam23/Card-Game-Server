@@ -31,7 +31,7 @@ namespace CardGameServer
         /// <summary>
         /// Cards in the player's hand.
         /// </summary>
-        public Dictionary<Guid, Card> Cards;
+        public Dictionary<SID, Card> Cards;
 
         /// <summary>
         /// Cards in the player's deck.

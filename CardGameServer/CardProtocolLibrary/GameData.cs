@@ -1,4 +1,7 @@
-﻿namespace CardProtocolLibrary
+﻿using System.Diagnostics.PerformanceData;
+using CardGameServer;
+
+namespace CardProtocolLibrary
 {
     public enum GameDataType
     {
@@ -39,6 +42,16 @@
             return i.String();
         }
 
+        public static implicit operator ulong(GameData i)
+        {
+            return i.Ulong();
+        }
+
+        public static implicit operator SID(GameData i)
+        {
+            return new SID {ID = i.Ulong()};
+        }
+
         public static implicit operator GameData(double d)
         {
             return new GameData(GameDataType.Double, d);
@@ -71,6 +84,12 @@
                 default:
                     return Data.ToString();
             }
+        }
+
+        public ulong Ulong()
+        {
+            if (Type != GameDataType.String) return (ulong) Data;
+            return ulong.Parse((string) Data);
         }
 
         public int Int()

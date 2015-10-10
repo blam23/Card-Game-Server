@@ -21,7 +21,10 @@ namespace CardGameServer
         public Boolean GameOver = false;
         public Player Winner = null;
         public Timer TurnTimer;
-        public Dictionary<Guid, Creature> Creatures; 
+
+        public Dictionary<ulong, Creature> Creatures;
+        public Dictionary<ulong, Spell> Spells;
+        public Dictionary<ulong, Card> Cards;
 
         #region Events
         /// <summary>
@@ -92,7 +95,7 @@ namespace CardGameServer
                     case GameAction.PlayCard:
                         Card card;
                         // Attempt to get the card matching the UID
-                        if (player.Cards.TryGetValue(new Guid(data["uid"]), out card))
+                        if (player.Cards.TryGetValue(data["uid"], out card))
                         {
                             GameData targetID;
                             if (data.TryGetValue("target", out targetID))
