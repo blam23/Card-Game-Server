@@ -2,6 +2,7 @@
 {
     public enum GameAction
     {
+        Error,
         GameStart,
         TurnStart,
         TurnEnd,

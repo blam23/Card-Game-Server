@@ -98,6 +98,17 @@ namespace CardGameListenServer
                             new Dictionary<string, GameData> {{"counter", (++client.PingCounter)}});
                     }
                 }
+                else if (input.Action == GameAction.Meta)
+                {
+                    if (input.Data["protocol"] != GameActionWriter.PROTOCOL_VERSION.ToString())
+                    {
+                        client.Writer.SendAction(GameAction.Error, new Dictionary<string, GameData>
+                        {
+                            {"code", ErrorCode.VersionMismatch},
+                            {"message", $"Server version: {GameActionWriter.PROTOCOL_VERSION} - Client Version: {input.Data["protocol"]}" }
+                        });
+                    }
+                }
                 else
                 {
                     Game.Board.RecieveCommand(player, input);

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.PerformanceData;
+﻿using System;
+using System.Diagnostics.PerformanceData;
 using CardGameServer;
 
 namespace CardProtocolLibrary
@@ -70,6 +71,22 @@ namespace CardProtocolLibrary
         public static implicit operator GameData(string s)
         {
             return new GameData(GameDataType.String, s);
+        }
+
+        public static implicit operator GameData(ErrorCode e)
+        {
+            return new GameData(GameDataType.Int, e);
+        }
+
+        public static implicit operator ErrorCode(GameData d)
+        {
+            if (d.Type == GameDataType.String)
+            {
+                return (ErrorCode) Enum.Parse(typeof (ErrorCode), (string) d.Data);
+            }
+
+            // if it's an int we don't need to parse it
+            return (ErrorCode) d.Data;
         }
 
         public string String()

@@ -47,5 +47,7 @@ namespace CardGameServer
         /// Player's ID !! FOR THIS GAME ONLY !!
         /// </summary>
         public int ID;
+
+        public string Name;
     }
 }
