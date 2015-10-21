@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Net.Sockets;
+using CardGameServer;
 using CardProtocolLibrary;
 
 namespace CardGameListenServer
@@ -25,6 +26,12 @@ namespace CardGameListenServer
         /// A ping counter, helps to detect timeouts and temporary connection drops.
         /// </summary>
         public int PingCounter = 0;
+
+        /// <summary>
+        /// The player associated with the client.
+        /// Null if client is a spectator
+        /// </summary>
+        public Player Player;
 
         public Client(TcpClient tcpClient)
         {

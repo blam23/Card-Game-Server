@@ -89,6 +89,21 @@ namespace CardProtocolLibrary
             return (ErrorCode) d.Data;
         }
 
+        public static implicit operator GameData(ConnectionPhase e)
+        {
+            return new GameData(GameDataType.Int, e);
+        }
+
+        public static implicit operator ConnectionPhase(GameData d)
+        {
+            if (d.Type == GameDataType.String)
+            {
+                return (ConnectionPhase)Enum.Parse(typeof(ConnectionPhase), (string)d.Data);
+            }
+
+            return (ConnectionPhase)d.Data;
+        }
+
         public string String()
         {
             // ReSharper disable once SwitchStatementMissingSomeCases

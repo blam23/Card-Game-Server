@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConnectionPhase.cs" />
+    <Compile Include="ErrorCode.cs" />
     <Compile Include="GameAction.cs" />
     <Compile Include="GameActionWriter.cs" />
     <Compile Include="GameData.cs" />

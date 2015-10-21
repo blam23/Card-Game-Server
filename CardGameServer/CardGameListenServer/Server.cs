@@ -53,6 +53,14 @@ namespace CardGameListenServer
             }
         }
 
+        internal static void ForceClose(Client client, GameDataAction Error)
+        {
+            if (client.RawClient.Connected)
+            {
+                client.Writer.SendAction(Error);
+            }
+        }
+
         private static async void HandleClientComm(object connection)
         {
             var tcpClient = (TcpClient)connection;
@@ -63,16 +71,17 @@ namespace CardGameListenServer
             {
                 DataWriter = client.Writer
             };
+            client.Player = player;
             Players.Add(player);
             if (Players.Count == 2)
             {
-                //Game.StartGame(Players);
+                Game.StartGame(Players);
             }
 
             // Initial Handshake as per protocol s2.0 should start with the
             //  protocol version to make sure client and server are compatible
             client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData> { {"protocol", GameActionWriter.PROTOCOL_VERSION.ToString()}});
-
+            var phase = ConnectionPhase.Handshake;
             while (tcpClient.Connected)
             {
                 var line = await client.Reader.ReadLineAsync();
@@ -88,28 +97,62 @@ namespace CardGameListenServer
                 {
                     Console.WriteLine($"   + '{kvp.Key}' => {kvp.Value}");
                 }
-
+                var handled = false;
                 if (input.Action == GameAction.Ping)
                 {
                     // Network Protocol s2.1
-                    if (input.Data["counter"].Int() == (++client.PingCounter))
+                    if (input.Data["counter"] == (++client.PingCounter))
                     {
                         client.Writer.SendAction(GameAction.Ping,
                             new Dictionary<string, GameData> {{"counter", (++client.PingCounter)}});
                     }
-                }
-                else if (input.Action == GameAction.Meta)
-                {
-                    if (input.Data["protocol"] != GameActionWriter.PROTOCOL_VERSION.ToString())
+                    else
                     {
-                        client.Writer.SendAction(GameAction.Error, new Dictionary<string, GameData>
+                        // Use ForceClose here? 
+                        // Should never occur -- just incase!
+                        client.Writer.SendAction(GameAction.Error,
+                            new Dictionary<string, GameData> 
+                                {
+                                    { "code", ErrorCode.PingMismatch },
+                                    { "message", $"Server was Expecting: {client.PingCounter}, Client Sent: {input.Data["counter"]}" }
+                                });
+                    }
+                    handled = true;
+                }
+
+                if (input.Action == GameAction.Meta)
+                {
+                    if (phase == ConnectionPhase.Handshake)
+                    {
+                        if (input.Data.ContainsKey("protocol"))
                         {
-                            {"code", ErrorCode.VersionMismatch},
-                            {"message", $"Server version: {GameActionWriter.PROTOCOL_VERSION} - Client Version: {input.Data["protocol"]}" }
-                        });
+                            if (input.Data["protocol"] != GameActionWriter.PROTOCOL_VERSION.ToString())
+                            {
+                                ForceClose(client, new GameDataAction(GameAction.Error, new Dictionary<string, GameData>
+                                {
+                                    {"code", ErrorCode.VersionMismatch},
+                                    {
+                                        "message",
+                                        $"Server version: {GameActionWriter.PROTOCOL_VERSION} - Client Version: {input.Data["protocol"]}"
+                                    }
+                                }));
+                                handled = true;
+                            }
+                        }
+                        if (input.Data.ContainsKey("name"))
+                        {
+                            client.Player.Name = input.Data["name"];
+                            handled = true;
+                            phase = ConnectionPhase.Setup;
+                            client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData>
+                            {
+                                {"phase", ConnectionPhase.Setup}
+                            });
+                        }
                     }
                 }
-                else
+
+                if (!handled)
                 {
                     Game.Board.RecieveCommand(player, input);
                 }
