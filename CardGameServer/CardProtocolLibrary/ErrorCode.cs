@@ -1,8 +1,9 @@
-﻿namespace CardProtocolLibrary
+namespace CardProtocolLibrary
 {
     public enum ErrorCode
     {
         VersionMismatch,
-        PingMismatch
+        PingMismatch,
+        InvalidDeck,
     }
 }

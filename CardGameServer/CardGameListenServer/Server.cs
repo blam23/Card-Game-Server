@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -18,7 +19,7 @@ namespace CardGameListenServer
         private static TcpListener _listener;
         private static Thread _listenThread;
         public static readonly List<Client> Clients = new List<Client>();
-        public static readonly List<Player> Players = new List<Player>(); 
+        public static readonly List<Player> Players = new List<Player>();
 
         /// <summary>
         /// Starts the game server, loads in the game data
@@ -63,7 +64,7 @@ namespace CardGameListenServer
 
         private static async void HandleClientComm(object connection)
         {
-            var tcpClient = (TcpClient)connection;
+            var tcpClient = (TcpClient) connection;
             // Create an instance of our custom client handling object
             var client = new Client(tcpClient);
             Clients.Add(client);
@@ -73,14 +74,15 @@ namespace CardGameListenServer
             };
             client.Player = player;
             Players.Add(player);
-            if (Players.Count == 2)
-            {
-                Game.StartGame(Players);
-            }
+//            if (Players.Count == 2)
+//            {
+//                Game.StartGame(Players);
+//            }
 
             // Initial Handshake as per protocol s2.0 should start with the
             //  protocol version to make sure client and server are compatible
-            client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData> { {"protocol", GameActionWriter.PROTOCOL_VERSION.ToString()}});
+            client.Writer.SendAction(GameAction.Meta,
+                new Dictionary<string, GameData> {{"protocol", GameActionWriter.PROTOCOL_VERSION.ToString()}});
             var phase = ConnectionPhase.Handshake;
             while (tcpClient.Connected)
             {
@@ -111,52 +113,99 @@ namespace CardGameListenServer
                         // Use ForceClose here? 
                         // Should never occur -- just incase!
                         client.Writer.SendAction(GameAction.Error,
-                            new Dictionary<string, GameData> 
+                            new Dictionary<string, GameData>
+                            {
+                                {"code", ErrorCode.PingMismatch},
                                 {
-                                    { "code", ErrorCode.PingMismatch },
-                                    { "message", $"Server was Expecting: {client.PingCounter}, Client Sent: {input.Data["counter"]}" }
-                                });
+                                    "message",
+                                    $"Server was Expecting: {client.PingCounter}, Client Sent: {input.Data["counter"]}"
+                                }
+                            });
                     }
                     handled = true;
                 }
 
                 if (input.Action == GameAction.Meta)
                 {
-                    if (phase == ConnectionPhase.Handshake)
+                    switch (phase)
                     {
-                        if (input.Data.ContainsKey("protocol"))
-                        {
-                            if (input.Data["protocol"] != GameActionWriter.PROTOCOL_VERSION.ToString())
-                            {
-                                ForceClose(client, new GameDataAction(GameAction.Error, new Dictionary<string, GameData>
-                                {
-                                    {"code", ErrorCode.VersionMismatch},
-                                    {
-                                        "message",
-                                        $"Server version: {GameActionWriter.PROTOCOL_VERSION} - Client Version: {input.Data["protocol"]}"
-                                    }
-                                }));
-                                handled = true;
-                            }
-                        }
-                        if (input.Data.ContainsKey("name"))
-                        {
-                            client.Player.Name = input.Data["name"];
-                            handled = true;
-                            phase = ConnectionPhase.Setup;
-                            client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData>
+                        case ConnectionPhase.Handshake:
+                            HandleHandshake(client, ref phase, input, ref handled);
+                            break;
+                        case ConnectionPhase.Setup:
+                            handled = HandleSetup(client, ref phase, input, ref handled);
+                            break;
+                    }
+
+                    if (!handled)
+                    {
+                        Game.Board.RecieveCommand(player, input);
+                    }
+                }
+            }
+        }
+
+        private static bool HandleSetup(Client client, ref ConnectionPhase phase, GameDataAction input, ref bool handled)
+        {
+            if (input.Data.ContainsKey("deck"))
+            {
+                handled = true;
+                var deckData = input.Data["deck"].String();
+                var ids = deckData.Split(',');
+                if (ids.Length == Deck.CardLimit)
+                {
+                    client.Player.Deck = new Deck();
+                    foreach (var card in ids.Select(id => Game.Cards[id].CreateInstance()))
+                    {
+                        Game.Board.Cards.Add(card.UID, card);
+                        client.Player.Deck.PushRandom(card);
+                    }
+                }
+                else
+                {
+                    CloseConnection(client,
+                       ErrorCode.InvalidDeck,
+                       $"Invalid amount of cards, deck requires {Deck.CardLimit} only {ids.Length} were recieved.");
+                }
+
+            }
+
+            return handled;
+        }
+
+        private static void HandleHandshake(Client client, ref ConnectionPhase phase, GameDataAction input, ref bool handled)
+        {
+            if (input.Data.ContainsKey("protocol"))
+            {
+                if (input.Data["protocol"] != GameActionWriter.PROTOCOL_VERSION.ToString())
+                {
+                    CloseConnection(client,
+                        ErrorCode.VersionMismatch,
+                        $"Server version: {GameActionWriter.PROTOCOL_VERSION} - Client Version: {input.Data["protocol"]}");
+                    handled = true;
+                }
+            }
+            if (input.Data.ContainsKey("name"))
+            {
+                client.Player.Name = input.Data["name"];
+                handled = true;
+                phase = ConnectionPhase.Setup;
+                client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData>
                             {
                                 {"phase", ConnectionPhase.Setup}
                             });
-                        }
-                    }
-                }
-
-                if (!handled)
-                {
-                    Game.Board.RecieveCommand(player, input);
-                }
             }
+        }
+
+        private static void CloseConnection(Client client, ErrorCode error, string message)
+        {
+            ForceClose(client, new GameDataAction(GameAction.Error, new Dictionary<string, GameData>
+            {
+                {"code", error},
+                {
+                    "message", message
+                }
+            }));
         }
     }
 }
