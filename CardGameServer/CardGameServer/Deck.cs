@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace CardGameServer
 {
@@ -9,7 +9,8 @@ namespace CardGameServer
     public class Deck
     {
         public List<Card> Cards;
-        public Player Owner; 
+        public Player Owner;
+        public static int CardLimit => 30;
 
         /// <summary>
         /// Removes the topmost card from the deck.
