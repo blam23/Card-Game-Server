@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -22,9 +22,9 @@ namespace CardGameServer
         public Player Winner = null;
         public Timer TurnTimer;
 
-        public Dictionary<ulong, Creature> Creatures;
-        public Dictionary<ulong, Spell> Spells;
-        public Dictionary<ulong, Card> Cards;
+        public Dictionary<SID, Creature> Creatures;
+        public Dictionary<SID, Spell> Spells;
+        public Dictionary<SID, Card> Cards;
 
         #region Events
         /// <summary>
