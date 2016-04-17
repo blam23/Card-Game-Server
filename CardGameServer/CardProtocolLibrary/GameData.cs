@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.PerformanceData;
 using CardGameServer;
 
 namespace CardProtocolLibrary
