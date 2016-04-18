@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
@@ -38,7 +38,7 @@ namespace CardGameTestUI
         {
             try
             {
-                rawSocket = new TcpClient(IP, port);
+                rawSocket = new TcpClient(cmbIP.Text, port);
                 client = new Client(rawSocket);
 
                 SendAction(GameAction.Meta, new Dictionary<string, GameData>

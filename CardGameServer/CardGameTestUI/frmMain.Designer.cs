@@ -1,4 +1,4 @@
-﻿namespace CardGameTestUI
+namespace CardGameTestUI
 {
     partial class frmMain
     {
@@ -37,6 +37,7 @@
             this.txtName = new System.Windows.Forms.TextBox();
             this.lbl_static_name = new System.Windows.Forms.Label();
             this.tmrPing = new System.Windows.Forms.Timer(this.components);
+            this.cmbIP = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lbRecieved
@@ -129,12 +130,25 @@
             this.tmrPing.Interval = 7000;
             this.tmrPing.Tick += new System.EventHandler(this.tmrPing_Tick);
             // 
+            // cmbIP
+            // 
+            this.cmbIP.FormattingEnabled = true;
+            this.cmbIP.Items.AddRange(new object[] {
+            "localhost",
+            "139.59.168.252"});
+            this.cmbIP.Location = new System.Drawing.Point(922, 95);
+            this.cmbIP.Name = "cmbIP";
+            this.cmbIP.Size = new System.Drawing.Size(233, 25);
+            this.cmbIP.TabIndex = 7;
+            this.cmbIP.Text = "localhost";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
             this.ClientSize = new System.Drawing.Size(1414, 1045);
+            this.Controls.Add(this.cmbIP);
             this.Controls.Add(this.lbl_static_name);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.btnMain);
@@ -162,6 +176,7 @@
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label lbl_static_name;
         private System.Windows.Forms.Timer tmrPing;
+        private System.Windows.Forms.ComboBox cmbIP;
     }
 }
 
