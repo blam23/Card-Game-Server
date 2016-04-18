@@ -1,18 +1,23 @@
 ﻿namespace CardGameServer
 {
-    public class SID
+    public struct SID
     {
-        public ulong ID;
+        private  ulong _id;
+        public ulong ID => _id;
         private static ulong _lastID;
 
         public static SID New()
         {
-            return new SID { ID = _lastID++ };
+            return new SID { _id = _lastID++ };
+        }
+        
+        public SID(ulong id) {
+            _id = id;
         }
 
         public static implicit operator ulong (SID i)
         {
-            return i.ID;
+            return i._id;
         }
     }
 }

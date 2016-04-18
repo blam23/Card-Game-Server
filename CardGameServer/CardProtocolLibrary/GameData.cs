@@ -49,7 +49,7 @@ namespace CardProtocolLibrary
 
         public static implicit operator SID(GameData i)
         {
-            return new SID {ID = i.Ulong()};
+            return new SID(i.Ulong());
         }
 
         public static implicit operator GameData(double d)
