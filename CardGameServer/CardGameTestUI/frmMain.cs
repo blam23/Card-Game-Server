@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CardGameListenServer;
+using CardGameTestUI.Properties;
 using CardProtocolLibrary;
 
 namespace CardGameTestUI
@@ -48,12 +50,15 @@ namespace CardGameTestUI
                 });
 
                 tmrPing.Enabled = true;
-
+                lblStatus.ForeColor = Color.GreenYellow;
+                lblStatus.Text = Resources.ConnectedString;
                 Task.Factory.StartNew(() => GetData(client), TaskCreationOptions.LongRunning);
             }
             catch (Exception ex)
             {
                 lbRecieved.Items.Add(ex.Message);
+                lblStatus.ForeColor = Color.Firebrick;
+                lblStatus.Text = Resources.ConnectionFailed;
                 if (rawSocket != null && rawSocket.Connected)
                 {
                     rawSocket.Close();
