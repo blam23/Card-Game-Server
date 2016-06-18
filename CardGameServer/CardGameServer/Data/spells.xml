@@ -2,6 +2,7 @@
 <spells>
   <spell ID="fireball">
     <targetType>Single</targetType>
+    <cost>6</cost>
     <targetGroup>Minions, Champions, Allies, Enemies</targetGroup>
     <effects>
       <spellDamage>
@@ -11,6 +12,7 @@
   </spell>
   <spell ID="flamestrike">
     <targetType>None</targetType>
+    <cost>7</cost>
     <targetGroup>Minions, Enemies</targetGroup>
     <effects>
       <spellDamage>

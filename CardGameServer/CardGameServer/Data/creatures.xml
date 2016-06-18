@@ -2,6 +2,7 @@
 <creatures>
   <!-- COMMANDERS-->
   <creature ID="c-irozeek">
+    <cost>10</cost>
     <class>knight</class>
     <name>Stalwart Irozeek</name>
     <image>creature/dummy</image>
@@ -12,6 +13,7 @@
   </creature>
   
   <creature ID="c-herbalisha">
+    <cost>10</cost>
     <class>nature</class>
     <name>Herbalisha</name>
     <image>creature/dummy</image>
@@ -96,7 +98,293 @@
       <divineshield/>
     </effects>
   </creature>
-  <creature ID="testbro">
+  <creature ID="testbro1">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+  <creature ID="testbro2">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+ <creature ID="testbro3">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro4">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro5">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro6">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro7">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro8">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro9">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro10">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro11">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro12">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro13">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro14">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro15">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro16">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro17">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro18">
+    <name>Master Baiter</name>
+    <health>1</health>
+    <attack>3</attack>
+    <cost>4</cost>
+    <type>mechanical</type>
+    <class>knight</class>
+    <image>creature/placeholder</image>
+    <charge/>
+    <effects>
+      <divineshield>
+        <hits>3</hits>
+      </divineshield>
+    </effects>
+  </creature>
+
+ <creature ID="testbro19">
     <name>Master Baiter</name>
     <health>1</health>
     <attack>3</attack>
@@ -114,6 +402,7 @@
 
   <!-- NATURE CREATURES -->
   <creature ID="token_treant">
+    <token/>
     <name>Treant</name>
     <health>2</health>
     <attack>2</attack>

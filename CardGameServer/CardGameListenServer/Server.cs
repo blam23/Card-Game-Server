@@ -155,8 +155,29 @@ namespace CardGameListenServer
                 if (ids.Length == Deck.CardLimit)
                 {
                     client.Player.Deck = new Deck();
-                    foreach (var card in ids.Select(id => Game.Cards[id].CreateInstance()))
+                    var usedIDs = new Dictionary<string, int>();
+                    foreach (var id in ids)
                     {
+                        int current;
+                        if (usedIDs.TryGetValue(id, out current))
+                        {
+                            if (current < Deck.CardDuplicateLimit)
+                            {
+                                usedIDs[id] = current+1;
+                            }
+                            else
+                            {
+                                CloseConnection(client,
+                                    ErrorCode.InvalidDeck,
+                                    $"More than {Deck.CardDuplicateLimit} of card id '{id}' detected in deck.");
+                            }
+                        }
+                        else
+                        {
+                            usedIDs.Add(id, 1);
+                        }
+                        var card = Game.Cards[id].CreateInstance();
+                        
                         Game.Board.Cards.Add(card.UID, card);
                         client.Player.Deck.PushRandom(card);
                     }
@@ -165,7 +186,7 @@ namespace CardGameListenServer
                 {
                     CloseConnection(client,
                        ErrorCode.InvalidDeck,
-                       $"Invalid amount of cards, deck requires {Deck.CardLimit} only {ids.Length} were recieved.");
+                       $"Invalid amount of cards, deck requires {Deck.CardLimit}. {ids.Length} cards were recieved.");
                 }
 
             }

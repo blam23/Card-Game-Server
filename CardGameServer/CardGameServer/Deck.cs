@@ -13,6 +13,11 @@ namespace CardGameServer
         public static int CardLimit => 30;
 
         /// <summary>
+        /// How many of the same card are allowed in a deck
+        /// </summary>
+        public static int CardDuplicateLimit => 2;
+
+        /// <summary>
         /// Removes the topmost card from the deck.
         /// </summary>
         /// <returns></returns>

@@ -152,7 +152,7 @@ namespace CardGameServer
         /// Loads in spells from the "spell.xml" resource file.
         /// </summary>
         /// <returns>A dictionary mapping spell names to the actual Spell class.</returns>
-        public static Dictionary<string, Spell> LoadSpells()
+        public static Dictionary<string, Spell> LoadSpells(ref Dictionary<string, Card> cards)
         {
             // Load in and parse our "spell.xml" file
             var spellXmlDocument = new XmlDocument();
@@ -167,6 +167,22 @@ namespace CardGameServer
                 var spell = GetSpell(spellData, name);
 
                 spells.Add(name, spell);
+
+                // Create a card for our spell
+                var card = new Card
+                {
+                    Cost = int.Parse(spellData.SelectSingleNode("cost").InnerText),
+                    CreatureID = name,
+                    Type = CardType.Creature,
+                    Token = spellData.SelectSingleNode("token") != null
+                };
+
+                // Card effects, such as reducing cost each turn.
+                XmlNode cardEffects = spellData["cardeffects"];
+                card.EffectData.AddRange(LoadEffects(cardEffects, EffectType.card));
+
+                cards.Add("cast_" + name, card);
+
             }
             return spells;
         }
@@ -191,7 +207,7 @@ namespace CardGameServer
             // Load in the spell's effects using the generic effect loading method
             XmlNode effects = spellData["effects"];
             spell.EffectData.AddRange(LoadEffects(effects, EffectType.spell));
-
+   
             return spell;
         }
 
@@ -199,7 +215,7 @@ namespace CardGameServer
         /// Loads in Creatures from the "creatures.xml" resource file.
         /// </summary>
         /// <returns>A dictionary mapping creature ID's to the actual Creature base instance.</returns>
-        public static Dictionary<string, Creature> LoadCreatures()
+        public static Dictionary<string, Creature> LoadCreatures(ref Dictionary<string, Card> cards)
         {
             // Parse the XML document.
             var creatureXmlDocument = new XmlDocument();
@@ -231,13 +247,30 @@ namespace CardGameServer
                     MagicTargetable = creatureData.SelectSingleNode("magictargetable") != null,
                     PhysicalTargetable = creatureData.SelectSingleNode("physicaltargetable") != null,
                     Stealth = creatureData.SelectSingleNode("stealth") != null,
-                    Image = creatureData.SelectSingleNode("image").InnerText
+                    Image = creatureData.SelectSingleNode("image").InnerText,
                 };
-
+                
                 // Load in any effects with our super handy generic effect loading method.
                 XmlNode effects = creatureData["effects"];
                 creature.EffectData.AddRange(LoadEffects(effects, EffectType.creature));
                 creatures.Add(name, creature);
+
+                
+                //if (creatureData.SelectSingleNode("token") != null) continue;
+
+                var card = new Card
+                {
+                    Cost = int.Parse(creatureData.SelectSingleNode("cost").InnerText),
+                    CreatureID = name,
+                    Type = CardType.Creature,
+                    Token = creatureData.SelectSingleNode("token") != null
+                };
+
+                // Card effects, such as reducing cost each turn.
+                XmlNode cardEffects = creatureData["cardeffects"];
+                card.EffectData.AddRange(LoadEffects(cardEffects, EffectType.card));
+
+                cards.Add("summon_" + name, card);
             }
 
             return creatures;
@@ -249,7 +282,7 @@ namespace CardGameServer
         /// TODO: Remove this & generate cards from the spell and creature data
         /// </summary>
         /// <returns>Dictionary mapping card names to Card class instance</returns>
-        public static Dictionary<string, Card> LoadCards()
+        public static Dictionary<string, Card> old_LoadCards()
         {
             // Load in and parse our "cards.xml" resource file.
             var cardXmlDocument = new XmlDocument();
@@ -288,8 +321,9 @@ namespace CardGameServer
         /// </summary>
         /// <param name="filename">Resource name to load (starts in "Data" folder)</param>
         /// <returns>Stream to read file data from.</returns>
-        public static Stream GetResource(String filename)
+        public static Stream GetResource(string filename)
         {
+            if (filename == null) throw new ArgumentNullException(nameof(filename));
             // Use reflection to get the embedded resource stream.
             // TODO: Does this have to use reflection?
             return typeof(DataLoader).Module.Assembly.GetManifestResourceStream("CardGameServer.Data." + filename);

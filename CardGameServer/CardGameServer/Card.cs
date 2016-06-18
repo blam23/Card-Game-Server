@@ -21,6 +21,10 @@ namespace CardGameServer
         public bool CancelPlay = false;
         public event Action<Card> Played;
 
+        // Token cards can't be in a player's starting deck
+        //  but can be added in later via effects.
+        public bool Token;
+
         protected virtual void OnPlayed(Card obj)
         {
             var handler = Played;
