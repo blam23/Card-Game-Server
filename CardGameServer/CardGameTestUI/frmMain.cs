@@ -45,7 +45,7 @@ namespace CardGameTestUI
 
                 SendAction(GameAction.Meta, new Dictionary<string, GameData>
                 {
-                    {"name", txtName.Text},
+                    {"name", txtName.Name},
                     {"protocol", GameActionWriter.PROTOCOL_VERSION.ToString()}
                 });
 
