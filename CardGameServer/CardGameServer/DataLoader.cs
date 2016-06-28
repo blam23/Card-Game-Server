@@ -277,44 +277,6 @@ namespace CardGameServer
         }
 
         /// <summary>
-        /// Loads in card data from the "cards.xml" resource.
-        /// 
-        /// TODO: Remove this & generate cards from the spell and creature data
-        /// </summary>
-        /// <returns>Dictionary mapping card names to Card class instance</returns>
-        public static Dictionary<string, Card> old_LoadCards()
-        {
-            // Load in and parse our "cards.xml" resource file.
-            var cardXmlDocument = new XmlDocument();
-            cardXmlDocument.Load(GetResource("cards.xml"));
-
-            var cards = new Dictionary<string, Card>();
-
-            foreach (XmlNode cardData in cardXmlDocument.GetElementsByTagName("card"))
-            {
-                var name = cardData.Attributes["ID"].Value;
-
-                // We load in the card's data, A card must have an
-                //  ID, Cost, Type and related Creature or Spell ID.
-                var card = new Card
-                {
-                    ID = name,
-                    Type = Conversion.StringToEnum<CardType>(cardData["type"].InnerText),
-                    CreatureID = cardData["creatureID"] == null ? null : cardData["creatureID"].InnerText,
-                    SpellID = cardData["spellID"] == null ? null : cardData["spellID"].InnerText,
-                    Cost = int.Parse(cardData["cost"].InnerText)
-                };
-
-                XmlNode effects = cardData["effects"];
-                card.EffectData.AddRange(LoadEffects(effects, EffectType.card));
-
-                cards.Add(name, card);
-            }
-
-            return cards;
-        }
-
-        /// <summary>
         /// Loads a specific embedded resource file, returns a 
         /// Stream that can be used to read through it (StreamReader)
         /// or handed to the XMLDocument class if it's an XML file.

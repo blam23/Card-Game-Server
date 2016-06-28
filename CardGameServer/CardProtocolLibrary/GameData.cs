@@ -90,7 +90,7 @@ namespace CardProtocolLibrary
 
         public static implicit operator GameData(ConnectionPhase e)
         {
-            return new GameData(GameDataType.Int, e);
+            return new GameData(GameDataType.Int, (int)e);
         }
 
         public static implicit operator ConnectionPhase(GameData d)

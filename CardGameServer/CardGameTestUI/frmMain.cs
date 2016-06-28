@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using CardGameListenServer;
+using CardGameServer;
 using CardGameTestUI.Properties;
 using CardProtocolLibrary;
 
@@ -20,6 +22,23 @@ namespace CardGameTestUI
         private const int port = 4020;
         private int _pingCounter;
 
+        public ConnectionPhase Phase;
+
+        public event Action SetupPhase;
+
+        public void OnSetupPhase()
+        {
+            SetupPhase?.Invoke();
+        }
+
+        public event Action GamePhase;
+
+        public void OnGamePhase()
+        {
+            GamePhase?.Invoke();
+        }
+
+
         public frmMain()
         {
             InitializeComponent();
@@ -27,7 +46,32 @@ namespace CardGameTestUI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            SetupPhase += Setup;
+            GamePhase += GameStart;
+        }
+
+        private void GameStart()
+        {
             
+        }
+
+        private void Setup()
+        {
+            var deck = new string[Deck.CardLimit];
+            deck[0] = "cast_fireball";
+            deck[1] = "cast_fireball";
+            for (var i = 2; i < Deck.CardLimit; i+=2)
+            {
+                deck[i] = "summon_testbro" + i/2;
+                deck[i+1] = "summon_testbro" + i/2;
+            }
+
+            Console.WriteLine(deck);
+
+            client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData>
+            {
+                {"deck", string.Join(",", deck) }
+            });
         }
 
         public void SendAction(GameAction action, Dictionary<string, GameData> data)
@@ -45,7 +89,7 @@ namespace CardGameTestUI
 
                 SendAction(GameAction.Meta, new Dictionary<string, GameData>
                 {
-                    {"name", txtName.Name},
+                    {"name", txtName.Text},
                     {"protocol", GameActionWriter.PROTOCOL_VERSION.ToString()}
                 });
 
@@ -108,6 +152,27 @@ namespace CardGameTestUI
                         AddLine("WARNING: Ping Failure!!!!!!");
                     }
                 }
+                else if (input.Action == GameAction.Meta)
+                {
+                    if (input.Data.ContainsKey("phase"))
+                    {
+                        Phase = input.Data["phase"];
+                        switch (Phase)
+                        {
+                            case ConnectionPhase.Handshake:
+                                // This shouldn't occur, is the starting phase.
+                                break;
+                            case ConnectionPhase.Setup:
+                                OnSetupPhase();
+                                break;
+                            case ConnectionPhase.Game:
+                                OnGamePhase();
+                                break;
+                            default:
+                                throw new ArgumentOutOfRangeException();
+                        }
+                    }
+                }
             }
             lbRecieved.Items.Add("Disconnected.");
         }
@@ -116,7 +181,7 @@ namespace CardGameTestUI
         {
             if (rawSocket.Connected)
             {
-                SendAction(GameAction.Ping, new Dictionary<string, GameData> { {"counter", (++_pingCounter) } });
+                SendAction(GameAction.Ping, new Dictionary<string, GameData> {{"counter", (++_pingCounter)}});
             }
         }
     }

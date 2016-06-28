@@ -83,6 +83,10 @@
       <Project>{a8deb5d4-c5ff-4c67-ac0c-9e9331fe2adb}</Project>
       <Name>CardGameListenServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CardGameServer\CardGameBase.csproj">
+      <Project>{19DDB80D-60DB-41AF-A26A-AA69030BB240}</Project>
+      <Name>CardGameBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CardProtocolLibrary\CardProtocolLibrary.csproj">
       <Project>{2ab64f63-3276-4cf5-871d-0aadc02cca33}</Project>
       <Name>CardProtocolLibrary</Name>

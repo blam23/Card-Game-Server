@@ -8,7 +8,7 @@ namespace CardGameServer
     /// </summary>
     public class Deck
     {
-        public List<Card> Cards;
+        public List<Card> Cards = new List<Card>();
         public Player Owner;
         public static int CardLimit => 30;
 

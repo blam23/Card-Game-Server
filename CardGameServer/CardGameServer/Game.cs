@@ -37,7 +37,6 @@ namespace CardGameServer
             Cards = new Dictionary<string, Card>();
             Spells = DataLoader.LoadSpells(ref Cards);
             Creatures = DataLoader.LoadCreatures(ref Cards);
-            //Cards = DataLoader.LoadCards();
         }
 
         public static void StartGame(List<Player> players)

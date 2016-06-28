@@ -24,7 +24,6 @@ namespace CardGameServer
 
         public Dictionary<SID, Creature> Creatures;
         public Dictionary<SID, Spell> Spells;
-        public Dictionary<SID, Card> Cards;
 
         #region Events
         /// <summary>

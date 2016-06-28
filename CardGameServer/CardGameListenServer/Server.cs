@@ -74,10 +74,15 @@ namespace CardGameListenServer
             };
             client.Player = player;
             Players.Add(player);
-//            if (Players.Count == 2)
-//            {
-//                Game.StartGame(Players);
-//            }
+            if (Players.Count == 1)
+            {
+                // First player setup
+                ServerRandom.Initialise();
+            }
+            //if (Players.Count == 2)
+            //{
+            //    Game.StartGame(Players);
+            //}
 
             // Initial Handshake as per protocol s2.0 should start with the
             //  protocol version to make sure client and server are compatible
@@ -178,7 +183,7 @@ namespace CardGameListenServer
                         }
                         var card = Game.Cards[id].CreateInstance();
                         
-                        Game.Board.Cards.Add(card.UID, card);
+                        //Game.Board.Cards.Add(card.UID, card);
                         client.Player.Deck.PushRandom(card);
                     }
                 }
