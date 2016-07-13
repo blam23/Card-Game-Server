@@ -22,6 +22,9 @@ namespace CardGameServer
         public TargetType TargetType;
         public TargetGroup TargetGroup;
 
+        public string Name;
+        public string Image;
+
         // This is the metadata for the effects of this spell.
         // Used when creating new instances of this spell, if you wanted one
         // that did 10 damage, one that did 2.
@@ -55,7 +58,9 @@ namespace CardGameServer
                 ID = ID,
                 TargetType = TargetType,
                 TargetGroup = TargetGroup,
-                UID = SID.New()
+                UID = SID.New()        ,
+                Name = Name,
+                Image = Image
             };
 
             foreach (var effect in EffectData)
@@ -86,11 +91,15 @@ namespace CardGameServer
                 desc.Append(effect.Description);
                 if (i + 1 < Effects.Count)
                 {
-                    desc.Append("and ");
+                    desc.Append(" and ");
                 }
                 else if (i + 2 < Effects.Count)
                 {
                     desc.Append(", ");
+                }
+                if (desc.Length > 0)
+                {
+                    desc[0] = char.ToUpper(desc[0]);
                 }
             }
 

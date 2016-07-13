@@ -10,6 +10,27 @@
       </spellDamage>
     </effects>
   </spell>
+  <spell ID="frostbolt">
+    <targetType>Single</targetType>
+    <cost>2</cost>
+    <targetGroup>Minions, Champions, Allies, Enemies</targetGroup>
+    <effects>
+      <spellDamage>
+        <amount>3</amount>
+      </spellDamage>
+      <freeze/>
+    </effects>
+  </spell>
+  <spell ID="deepfreeze">
+    <targetType>Single</targetType>
+    <cost>4</cost>
+    <targetGroup>Minions, Allies, Enemies</targetGroup>
+    <effects>
+      <freeze>
+        <length>3</length>
+      </freeze>
+    </effects>
+  </spell>
   <spell ID="flamestrike">
     <targetType>None</targetType>
     <cost>7</cost>

@@ -39,7 +39,7 @@
             _owner.PhysicalImmune = true;
         }
 
-        public string Description => BlockLimit == 1 ? "Immune for 1 hit." : "Immune for " + BlockLimit + " hits.";
+        public string Description => BlockLimit == 1 ? "immune for 1 hit." : "immune for " + BlockLimit + " hits.";
         public bool Persistent => true;
         public bool Remove { get; set; }
         public int TimeLeft { get; set; }
