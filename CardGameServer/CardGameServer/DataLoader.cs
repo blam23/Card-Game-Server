@@ -172,16 +172,17 @@ namespace CardGameServer
                 var card = new Card
                 {
                     Cost = int.Parse(spellData.SelectSingleNode("cost").InnerText),
-                    CreatureID = name,
-                    Type = CardType.Creature,
-                    Token = spellData.SelectSingleNode("token") != null
+                    SpellID = name,
+                    Type = CardType.Spell,
+                    Token = spellData.SelectSingleNode("token") != null,
+                    ID = "cast_" + name
                 };
 
                 // Card effects, such as reducing cost each turn.
                 XmlNode cardEffects = spellData["cardeffects"];
                 card.EffectData.AddRange(LoadEffects(cardEffects, EffectType.card));
 
-                cards.Add("cast_" + name, card);
+                cards.Add(card.ID, card);
 
             }
             return spells;
@@ -263,14 +264,15 @@ namespace CardGameServer
                     Cost = int.Parse(creatureData.SelectSingleNode("cost").InnerText),
                     CreatureID = name,
                     Type = CardType.Creature,
-                    Token = creatureData.SelectSingleNode("token") != null
+                    Token = creatureData.SelectSingleNode("token") != null,
+                    ID = "summon_" + name
                 };
 
                 // Card effects, such as reducing cost each turn.
                 XmlNode cardEffects = creatureData["cardeffects"];
                 card.EffectData.AddRange(LoadEffects(cardEffects, EffectType.card));
 
-                cards.Add("summon_" + name, card);
+                cards.Add(card.ID, card);
             }
 
             return creatures;

@@ -92,7 +92,7 @@ namespace CardGameServer
         /// <param name="c"></param>
         public void PushRandom(Card c)
         {
-            Push(c, ServerRandom.Generator.Next(0, Cards.Count));
+            Push(c, ServerRandom.Generator.Next(0, Cards.Count+1));
         }
     }
 }

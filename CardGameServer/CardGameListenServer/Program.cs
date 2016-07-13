@@ -21,6 +21,13 @@ namespace CardGameListenServer
             Console.WriteLine("Starting Server..");
             Console.ForegroundColor = ConsoleColor.White;
 
+
+            var p = new Player();
+            var test = Game.Spells["frostbolt"].CreateInstance(p);
+            var test2 = Game.Spells["deepfreeze"].CreateInstance(p);
+            Console.WriteLine(test.GetDescription());
+            Console.WriteLine(test2.GetDescription());
+
             // Start the listen server and wait for connections!
             Server.Start();
         }

@@ -44,6 +44,7 @@
     <Compile Include="CustomAttributes.cs" />
     <Compile Include="Deck.cs" />
     <Compile Include="Effects\CustomValue.cs" />
+    <Compile Include="Effects\Freeze.cs" />
     <Compile Include="Effects\DeathRattle.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FakeClient.cs" />

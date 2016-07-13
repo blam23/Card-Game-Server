@@ -1,9 +1,8 @@
 ﻿using System.IO;
 using System.Net.Sockets;
 using CardGameServer;
-using CardProtocolLibrary;
 
-namespace CardGameListenServer
+namespace CardProtocolLibrary
 {
     /// <summary>
     /// Handles connection between server and player.

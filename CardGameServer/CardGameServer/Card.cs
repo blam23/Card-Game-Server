@@ -16,7 +16,7 @@ namespace CardGameServer
         public string CreatureID;
         public string SpellID;
         public List<EffectData> EffectData = new List<EffectData>(); 
-        public List<IEffect<Card>> Effects;
+        public List<IEffect<Card>> Effects = new List<IEffect<Card>>();
         public Player Owner;
         public bool CancelPlay = false;
         public event Action<Card> Played;

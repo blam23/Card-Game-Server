@@ -99,7 +99,7 @@ namespace CardGameServer
                             GameData targetID;
                             if (data.TryGetValue("target", out targetID))
                             {
-                                
+                                    
                             }
                             card.Play();
                         }
@@ -181,7 +181,16 @@ namespace CardGameServer
                 });
             }
 
-            // Start the game!
+            // Draw 4 cards each
+            foreach (var p in players)
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    DrawCard(p);
+                }
+            }
+
+            // Start the turns!
             DoTurn();
             StartTurnTimer();
         }
@@ -215,24 +224,30 @@ namespace CardGameServer
         public void DoTurn()
         {
             // Determine whose turn it is
-            ActivePlayerID = TurnCounter%Players.Count;
+            ActivePlayerID = TurnCounter % Players.Count;
             // Cache active player
             var activePlayer = ActivePlayer;
 
             // Make sure event is fired as it's the start of the turn
             OnTurnStart(this, activePlayer);
 
-            SendToAllPlayers(GameAction.TurnStart, new Dictionary<string, GameData> {{"player", ActivePlayerID}});
-
-            // TODO: Refactor this into separate "DrawCard" method.
+            SendToAllPlayers(GameAction.TurnStart, new Dictionary<string, GameData> { { "player", ActivePlayerID } });
 
             // Draw a card!
+            DrawCard(activePlayer);
+        }
+
+        private void DrawCard(Player activePlayer)
+        {
             var drawnCard = activePlayer.Deck.Pop();
             activePlayer.Cards.Add(drawnCard.UID, drawnCard);
+
+            drawnCard.Effects.ForEach(x => x.Start(drawnCard));
 
             // Show the player what card they have drawn
             activePlayer.DataWriter.SendAction(GameAction.DrawCard, new Dictionary<string, GameData>()
             {
+                // TODO: Send modifiers
                 {"player", ActivePlayerID}, {"card", drawnCard.ID}, {"uid", drawnCard.UID.ToString()}
             });
 

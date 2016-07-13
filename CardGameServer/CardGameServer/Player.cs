@@ -24,14 +24,20 @@ namespace CardGameServer
         public Creature Commander { get; set; }
 
         /// <summary>
+        /// Determines if this player has sent all the relevant
+        ///  data and can start the match.                   5
+        /// </summary>
+        public bool SetupComplete { get; set; }
+
+        /// <summary>
         /// The list of active players for a given player.
         /// </summary>
-        public List<Creature> Creatures;
+        public List<Creature> Creatures = new List<Creature>();
 
         /// <summary>
         /// Cards in the player's hand.
         /// </summary>
-        public Dictionary<SID, Card> Cards;
+        public Dictionary<SID, Card> Cards = new Dictionary<SID, Card>();
 
         /// <summary>
         /// Cards in the player's deck.

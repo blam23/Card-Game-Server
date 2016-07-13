@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using CardGameServer;
 using CardProtocolLibrary;
@@ -20,19 +21,20 @@ namespace CardGameListenServer
         private static Thread _listenThread;
         public static readonly List<Client> Clients = new List<Client>();
         public static readonly List<Player> Players = new List<Player>();
+        public static int PlayerAmount;
 
         /// <summary>
         /// Starts the game server, loads in the game data
         /// </summary>
         /// <param name="port">Leave as -1 to use default port</param>
-        public static void Start(int port = -1)
+        public static void Start(int port = -1, int playerCount = 2)
         {
             if (port == -1)
             {
                 port = DefaultPort;
             }
 
-
+            PlayerAmount = playerCount;
             _listener = new TcpListener(IPAddress.Any, port);
             _listenThread = new Thread(ListenForClients);
             _listenThread.Start();
@@ -79,10 +81,7 @@ namespace CardGameListenServer
                 // First player setup
                 ServerRandom.Initialise();
             }
-            //if (Players.Count == 2)
-            //{
-            //    Game.StartGame(Players);
-            //}
+
 
             // Initial Handshake as per protocol s2.0 should start with the
             //  protocol version to make sure client and server are compatible
@@ -185,6 +184,17 @@ namespace CardGameListenServer
                         
                         //Game.Board.Cards.Add(card.UID, card);
                         client.Player.Deck.PushRandom(card);
+                    }
+
+                    client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData> {
+                        { "deckvalid", 1 }
+                    });
+
+                    client.Player.SetupComplete = true;
+
+                    if (Players.Count == PlayerAmount && Players.All(x => x.SetupComplete))
+                    {
+                        Game.StartGame(Players);
                     }
                 }
                 else
