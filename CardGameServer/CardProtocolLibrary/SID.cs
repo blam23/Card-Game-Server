@@ -19,5 +19,10 @@
         {
             return i._id;
         }
+
+        public override string ToString()
+        {
+            return _id.ToString();
+        }
     }
 }
