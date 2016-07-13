@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using CardGameServer;
 
 namespace CardGameTestUI
 {
@@ -11,6 +12,11 @@ namespace CardGameTestUI
         [STAThread]
         static void Main()
         {
+
+
+            Game.Load();
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmMain());

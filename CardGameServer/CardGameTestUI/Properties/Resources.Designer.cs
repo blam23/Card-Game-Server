@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CardGameTestUI.Properties
-{
-
-
+namespace CardGameTestUI.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -75,6 +75,15 @@ namespace CardGameTestUI.Properties
         internal static string ConnectionFailed {
             get {
                 return ResourceManager.GetString("ConnectionFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Game In Progress..
+        /// </summary>
+        internal static string InGameString {
+            get {
+                return ResourceManager.GetString("InGameString", resourceCulture);
             }
         }
     }

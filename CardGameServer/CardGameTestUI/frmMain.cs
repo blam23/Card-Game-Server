@@ -15,12 +15,18 @@ namespace CardGameTestUI
 {
     public partial class frmMain : Form
     {
+
+        public static frmMain SecondForm;
+
         private TcpClient rawSocket;
         private Client client;
 
         private const string IP = "localhost";
         private const int port = 4020;
         private int _pingCounter;
+
+        public int PlayerID = -1;
+        public int Players = -1;
 
         public ConnectionPhase Phase;
 
@@ -48,6 +54,12 @@ namespace CardGameTestUI
         {
             SetupPhase += Setup;
             GamePhase += GameStart;
+
+
+            // Load up two instances#
+//            if (SecondForm != null) return;
+//            SecondForm = new frmMain();
+//            SecondForm.Show();
         }
 
         private void GameStart()
@@ -65,8 +77,6 @@ namespace CardGameTestUI
                 deck[i] = "summon_testbro" + i/2;
                 deck[i+1] = "summon_testbro" + i/2;
             }
-
-            Console.WriteLine(deck);
 
             client.Writer.SendAction(GameAction.Meta, new Dictionary<string, GameData>
             {
@@ -96,6 +106,7 @@ namespace CardGameTestUI
                 tmrPing.Enabled = true;
                 lblStatus.ForeColor = Color.GreenYellow;
                 lblStatus.Text = Resources.ConnectedString;
+                pnlStatus.Visible = true;
                 Task.Factory.StartNew(() => GetData(client), TaskCreationOptions.LongRunning);
             }
             catch (Exception ex)
@@ -119,6 +130,18 @@ namespace CardGameTestUI
             else
             {
                 lbRecieved.Items.Add(s);
+            }
+        }
+
+        private void AddCard(string s)
+        {
+            if (lvCards.InvokeRequired)
+            {
+                lvCards.Invoke((MethodInvoker)(() => lvCards.Items.Add(s)));
+            }
+            else
+            {
+                lvCards.Items.Add(s);
             }
         }
 
@@ -171,6 +194,22 @@ namespace CardGameTestUI
                             default:
                                 throw new ArgumentOutOfRangeException();
                         }
+                    }
+                }
+                else if (input.Action == GameAction.GameStart)
+                {
+                    PlayerID = input.Data["number"];
+                    Players = input.Data["players"];
+                }
+                else if (input.Action == GameAction.DrawCard)
+                {
+                    if (input.Data["player"] == PlayerID)
+                    {
+
+                        string cardID = input.Data["card"];
+                        var card = Game.Cards[cardID].CreateInstance();
+
+                        AddCard($"{cardID}\n{card.Cost}\n{card.Type}");
                     }
                 }
             }
